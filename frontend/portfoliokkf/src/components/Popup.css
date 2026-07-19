@@ -1,0 +1,8 @@
+.popup-overlay { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); z-index: 9999; }
+.popup-box { position: relative; width: min(100%, 420px); padding: 42px 32px 32px; border: 1px solid rgba(226,194,133,.25); border-radius: 18px; color: #f8f7f4; text-align: center; background: linear-gradient(145deg, #29231c, #101315); box-shadow: 0 24px 70px rgba(0,0,0,.6); animation: popup .3s ease-out; }
+.popup-box h2 { margin: 0 0 14px; font-family: "Cormorant Garamond", serif; font-size: 38px; font-weight: 600; letter-spacing: .01em; color: #f8f3e8; }
+.popup-box p { margin: 0; color: #c7c3bc; font-size: 15px; line-height: 1.65; }
+.close-btn { position: absolute; top: 10px; right: 14px; padding: 4px 10px; border: 0; color: #f8f7f4; background: transparent; font-size: 27px; line-height: 1; cursor: pointer; }
+.close-btn:hover { color: #d8a74d; }
+@keyframes popup { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (max-width: 420px) { .popup-box { padding: 38px 22px 26px; } .popup-box h2 { font-size: 28px; } }

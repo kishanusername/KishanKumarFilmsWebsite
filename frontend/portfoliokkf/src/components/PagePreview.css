@@ -1,0 +1,13 @@
+.page-preview { display: grid; justify-items: center; gap: 26px; padding: clamp(54px, 8vw, 108px) clamp(20px, 5vw, 72px) 64px; }
+.hero-intro { max-width: 800px; text-align: center; }
+.hero-kicker { margin: 0 0 14px; color: #a99eff; font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.hero-intro h2 { margin: 0; color: #f6f3f6; font-family: "Cormorant Garamond", serif; font-size: clamp(50px, 8vw, 94px); font-weight: 600; line-height: .86; letter-spacing: -.025em; }
+.hero-intro h2 em { color: #d7d0ff; font-weight: 600; }
+.hero-copy { max-width: 60ch; margin: 24px auto 0; color: #c1bec5; font-size: clamp(14px, 1.5vw, 16px); line-height: 1.8; }
+.hero-film { position: relative; width: min(100%, 1040px); padding-top: 25px; }
+.hero-film-label { position: absolute; top: 0; left: 18px; z-index: 1; padding: 6px 12px; color: #dfdbf5; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; border: 1px solid rgba(150,138,255,.3); border-radius: 999px; background: rgba(18,20,30,.86); }
+.hero-film-label b { margin-left: 8px; color: #9daeff; }
+.page-preview iframe { width: 100%; aspect-ratio: 16 / 9; height: auto; border: 1px solid rgba(131,120,255,.4); border-radius: 20px; box-shadow: 0 0 0 1px rgba(52,144,255,.13), 0 0 34px rgba(91,80,255,.18), 0 34px 90px rgba(0,0,0,.58); }
+.page-preview > button { padding: 15px 28px; border: 1px solid rgba(201,196,255,.52); border-radius: 999px; color: #faf9ff; background: linear-gradient(135deg, #7767dc, #3c65b6); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; box-shadow: 0 14px 34px rgba(79,77,205,.32); transition: transform .2s, box-shadow .2s, filter .2s; }
+.page-preview > button:hover { filter: brightness(1.12); transform: translateY(-3px); box-shadow: 0 18px 40px rgba(82,94,227,.46); }
+@media (max-width: 500px) { .page-preview { gap: 20px; padding-inline: 16px; } .hero-intro h2 { font-size: clamp(47px, 15vw, 66px); } .hero-copy { margin-top: 18px; } .hero-film { padding-top: 21px; } .page-preview iframe { border-radius: 11px; } }

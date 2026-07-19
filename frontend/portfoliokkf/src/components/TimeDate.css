@@ -1,0 +1,11 @@
+.time-date { display: grid; grid-template-columns: 1.05fr .85fr 1.3fr; width: min(100%, 760px); overflow: hidden; border: 1px solid rgba(138,126,255,.34); border-radius: 16px; background: rgba(12,14,19,.7); box-shadow: 0 0 0 1px rgba(72,134,255,.11), 0 16px 38px rgba(0,0,0,.26); backdrop-filter: blur(16px); }
+.time-card { display: flex; flex-direction: column; justify-content: center; min-height: 82px; padding: 15px 20px; color: #eeeaf3; border-left: 1px solid rgba(151,141,255,.19); }
+.time-card:first-child { border-left: 0; }
+.time-card-primary { background: linear-gradient(115deg, rgba(94,73,160,.38), rgba(46,81,145,.18)); }
+.time-card-label { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; color: #aaa8b4; font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.time-card-label i { width: 7px; height: 7px; border-radius: 50%; background: #8aa7ff; box-shadow: 0 0 10px #7995ff; animation: studioStatus 1.8s ease-in-out infinite; }
+.time-card strong { color: #f7f4fa; font-size: clamp(14px, 1.7vw, 19px); font-weight: 600; letter-spacing: .01em; }
+.time-card-primary strong { font-variant-numeric: tabular-nums; color: #dfd8ff; font-size: clamp(20px, 2.7vw, 29px); line-height: 1; }
+@keyframes studioStatus { 50% { opacity: .45; box-shadow: 0 0 3px #7995ff; } }
+@media (max-width: 620px) { .time-date { grid-template-columns: 1fr 1fr; } .time-card-date { grid-column: 1 / -1; border-top: 1px solid rgba(151,141,255,.19); border-left: 0; min-height: 68px; } }
+@media (max-width: 380px) { .time-card { padding: 13px 12px; } .time-card-label { font-size: 8px; } }

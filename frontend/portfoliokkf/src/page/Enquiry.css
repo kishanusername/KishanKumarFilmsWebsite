@@ -1,0 +1,333 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --bg: #0a0a0d;
+  --panel: #15151a;
+  --panel-raised: #1d1d24;
+  --border: rgba(255, 255, 255, 0.13);
+  --text: #f2f0ea;
+  --text-muted: #9c9a94;
+  --accent: #9284ff;
+  --accent-soft: rgba(146, 132, 255, 0.15);
+  --danger: #c24e3a;
+  --radius: 12px;
+}
+
+.enquiry-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 64px 24px 96px;
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+.enquiry-header {
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 32px;
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.enquiry-header h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(40px, 7vw, 64px);
+  letter-spacing: 0.02em;
+  margin: 8px 0 12px;
+  line-height: 1;
+}
+
+.enquiry-header p {
+  color: var(--text-muted);
+  max-width: 56ch;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ---------- Form shell ---------- */
+.enquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 28px 24px;
+}
+
+.form-section legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  padding: 0 6px;
+  color: var(--text);
+}
+
+.scene-number {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+/* ---------- Fields ---------- */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  margin-top: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="file"],
+select,
+textarea {
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 11px 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6a6a70;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.file-name {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---------- Checkbox groups ---------- */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.checkbox-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.checkbox-pill:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.checkbox-pill input {
+  accent-color: var(--accent);
+}
+
+/* ---------- Consent + submit ---------- */
+.consent-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.consent-pill {
+  border-radius: var(--radius);
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.submit-error {
+  color: var(--danger);
+  font-size: 13px;
+  background: rgba(194, 78, 58, 0.1);
+  border: 1px solid rgba(194, 78, 58, 0.3);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.btn-primary {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #17140a;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius);
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(217, 164, 65, 0.25);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(23, 20, 10, 0.35);
+  border-top-color: #17140a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Success state ---------- */
+.enquiry-success {
+  text-align: center;
+  padding: 96px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.success-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.enquiry-success h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 32px;
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+}
+
+.enquiry-success p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .enquiry-page {
+    padding: 40px 16px 72px;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    padding: 20px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .enquiry-success .btn-secondary {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

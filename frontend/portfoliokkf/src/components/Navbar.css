@@ -1,0 +1,59 @@
+.navbar {
+  min-height: 78px;
+  padding: 14px clamp(20px, 5vw, 72px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  background: rgba(11, 13, 16, .76);
+  border-bottom: 1px solid rgba(226, 194, 133, .15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px) saturate(130%);
+}
+.kkf {
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.brand-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 700;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+  background: linear-gradient(100deg, #f8f7ff 10%, #aaa2ff 48%, #f8f7ff 90%);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metalFlow 7s linear infinite;
+}
+.kkf::after {
+  content: "";
+  position: absolute;
+  left: -16%;
+  bottom: -14px;
+  width: 32%;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(206,218,255,.72) 0%, rgba(131,143,255,.35) 28%, rgba(104,72,224,.16) 50%, transparent 72%);
+  filter: blur(5px);
+  animation: brandLightSweep 3.6s ease-in-out infinite;
+}
+@keyframes metalFlow { to { background-position: 200% center; } }
+@keyframes brandLightSweep {
+  from { transform: translateX(0); opacity: .15; }
+  35% { opacity: 1; }
+  to { transform: translateX(390%); opacity: .15; }
+}
+@media (prefers-reduced-motion: reduce) { .kkf, .kkf::after { animation: none; } }
+.nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.nav-links a { display: block; padding: 9px 12px; color: #d7d4cc; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border-radius: 999px; transition: background .2s, color .2s, box-shadow .2s; }
+.nav-links a:hover, .nav-links a:focus-visible { color: #f8f7ff; background: rgba(118,104,231,.32); box-shadow: 0 8px 18px rgba(98,82,235,.2); outline: none; }
+@media (max-width: 780px) { .navbar { align-items: flex-start; flex-direction: column; gap: 7px; } .nav-links { justify-content: flex-start; } }
+@media (max-width: 430px) { .navbar { padding: 13px 16px; } .nav-links { gap: 2px; } .nav-links a { padding: 7px 8px; font-size: 12px; } }
