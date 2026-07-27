@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./Enquiry.css";
 
 // ---------------------------------------------------------------------------
@@ -13,7 +13,8 @@ import "./Enquiry.css";
 // OPTION B: Express backend
 // Point this at your Node/Express route, e.g. app.post('/api/enquiry', ...)
 // ---------------------------------------------------------------------------
-const BACKEND_ENDPOINT = "/api/enquiry";
+const CONTACT_EMAIL = "kishanusername670@gmail.com";
+const WHATSAPP_NUMBER = "919102077670";
 
 const initialFormState = {
   // Personal Information
@@ -85,6 +86,9 @@ export default function Enquiry() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const formRef = useRef(null);
+  const [isToastVisible, setIsToastVisible] = useState(false);
+  const [deliveryChannel, setDeliveryChannel] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -145,67 +149,65 @@ export default function Enquiry() {
     setFile(null);
   };
 
-  // Builds a plain-object payload (handy for both EmailJS templates and a JSON API body)
-  const buildPayload = () => ({
-    ...formData,
-    contentType: formData.contentType.join(", "),
-    fileName: file ? file.name : "No file attached",
+  const getLabelText = (label) => label?.textContent.replace(/\s+/g, " ").trim() || "";
+
+  const getFormEntries = () => Array.from(formRef.current?.querySelectorAll(".field, .consent-row") || []).flatMap((container) => {
+    const fieldLabel = container.querySelector(":scope > label");
+    const controls = Array.from(container.querySelectorAll("input, select, textarea"));
+    if (fieldLabel) {
+      const checkboxes = controls.filter((control) => control.type === "checkbox");
+      if (checkboxes.length) {
+        const optionLabels = Array.from(container.querySelectorAll(".checkbox-group label"));
+        const selected = optionLabels.filter((label) => label.querySelector("input")?.checked).map(getLabelText);
+        return [{
+          label: getLabelText(fieldLabel),
+          value: optionLabels.length ? selected.join(", ") || "Not Provided" : checkboxes.every((checkbox) => checkbox.checked) ? "Yes" : "No",
+        }];
+      }
+      const control = controls[0];
+      const value = control?.type === "file" ? Array.from(control.files || []).map((item) => item.name).join(", ") : control?.value;
+      return [{ label: getLabelText(fieldLabel), value: value?.trim?.() || value || "Not Provided" }];
+    }
+    return Array.from(container.querySelectorAll(".checkbox-group > label")).map((label) => ({
+      label: getLabelText(label), value: label.querySelector("input")?.checked ? "Yes" : "No",
+    }));
   });
 
-  const sendViaBackend = async (payload) => {
-    // Use FormData instead of JSON if you want the file to travel with the request
-    const body = new FormData();
-    Object.entries(payload).forEach(([key, value]) => body.append(key, value));
-    if (file) body.append("attachment", file);
-
-    const response = await fetch(BACKEND_ENDPOINT, {
-      method: "POST",
-      body,
-    });
-
-    if (!response.ok) {
-      throw new Error("Server responded with an error.");
-    }
-    return response.json();
+  const createEnquiryMessage = (includeHeading = false) => `${includeHeading ? "*New Enquiry*\n\n" : ""}${getFormEntries().map(({ label, value }) => `${label}:\n${value || "Not Provided"}`).join("\n\n")}`;
+  const showSuccessToast = () => {
+    setIsToastVisible(true);
+    window.setTimeout(() => setIsToastVisible(false), 4500);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError("");
+  const getEmailHref = () => {
+    const title = document.querySelector(".enquiry-header h1")?.textContent.trim() || "Enquiry";
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(createEnquiryMessage())}`;
+  };
 
+  const getWhatsAppHref = () => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(createEnquiryMessage(true))}`;
+
+  const sendEnquiry = (channel) => {
     if (!validate()) {
-      const firstErrorField = document.querySelector(".field-error");
-      firstErrorField?.scrollIntoView({ behavior: "smooth", block: "center" });
+      document.querySelector(".field-error")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-
-    setIsSubmitting(true);
-    const payload = buildPayload();
-
-    try {
-      const result = await sendViaBackend(payload);
-      setOrderId(result.orderId || "");
-      setIsSubmitted(true);
-      resetForm();
-    } catch (err) {
-      console.error(err);
-      setSubmitError(
-        "Something went wrong sending your enquiry. Please try again or reach out directly."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    setDeliveryChannel(channel);
+    showSuccessToast();
+    const destination = channel === "whatsapp" ? getWhatsAppHref() : getEmailHref();
+    window.setTimeout(() => { window.location.href = destination; }, 150);
   };
+
+  const handleSubmit = (event) => event.preventDefault();
 
   if (isSubmitted) {
     return (
       <section className="enquiry-page">
         <div className="enquiry-success" role="status">
-          <div className="success-badge">✓</div>
+          <div className="success-badge">ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ</div>
           <h2>Enquiry received</h2>
           <p>
             Thank you for reaching out. Our team reviews every brief personally and
-            will get back to you within 1–2 business days.
+            will get back to you within 1ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ2 business days.
           </p>
           <button className="btn-secondary" onClick={() => setIsSubmitted(false)}>
             Submit another enquiry
@@ -226,8 +228,8 @@ export default function Enquiry() {
         </p>
       </header>
 
-      <form className="enquiry-form" onSubmit={handleSubmit} noValidate>
-        {/* SCENE 01 — PERSONAL INFORMATION */}
+      <form ref={formRef} className="enquiry-form" onSubmit={handleSubmit} noValidate>
+        {/* SCENE 01 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â PERSONAL INFORMATION */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">01</span> Personal Information
@@ -290,7 +292,7 @@ export default function Enquiry() {
           </div>
         </fieldset>
 
-        {/* SCENE 02 — PROJECT INFORMATION */}
+        {/* SCENE 02 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â PROJECT INFORMATION */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">02</span> Project Information
@@ -348,7 +350,7 @@ export default function Enquiry() {
           </div>
         </fieldset>
 
-        {/* SCENE 03 — EVENT DETAILS */}
+        {/* SCENE 03 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â EVENT DETAILS */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">03</span> Event Details
@@ -392,7 +394,7 @@ export default function Enquiry() {
           </div>
         </fieldset>
 
-        {/* SCENE 04 — CREATIVE VISION */}
+        {/* SCENE 04 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â CREATIVE VISION */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">04</span> Creative Vision
@@ -459,7 +461,7 @@ export default function Enquiry() {
           </div>
         </fieldset>
 
-        {/* SCENE 05 — SHOOT REQUIREMENTS */}
+        {/* SCENE 05 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â SHOOT REQUIREMENTS */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">05</span> Shoot Requirements
@@ -528,7 +530,7 @@ export default function Enquiry() {
           </div>
         </fieldset>
 
-        {/* SCENE 06 — COMMUNICATION PREFERENCES */}
+        {/* SCENE 06 ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â COMMUNICATION PREFERENCES */}
         <fieldset className="form-section">
           <legend>
             <span className="scene-number">06</span> Communication Preferences
@@ -590,18 +592,16 @@ export default function Enquiry() {
 
         {submitError && <div className="submit-error">{submitError}</div>}
 
-        <button className="btn-primary" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              <span className="spinner" aria-hidden="true" />
-              Sending…
-            </>
-          ) : (
-            "Submit Enquiry"
-          )}
-        </button>
+        <div className="enquiry-delivery-actions">
+          <button className="btn-primary enquiry-whatsapp-button" type="button" onClick={() => sendEnquiry("whatsapp")} disabled={Boolean(deliveryChannel)}>
+            <span aria-hidden="true">&#128172;</span> {deliveryChannel === "whatsapp" ? "Opening WhatsApp..." : "Send Enquiry Through WhatsApp"}
+          </button>
+          <button className="btn-primary enquiry-email-button" type="button" onClick={() => sendEnquiry("email")} disabled={Boolean(deliveryChannel)}>
+            <span aria-hidden="true">&#9993;</span> {deliveryChannel === "email" ? "Opening Email..." : "Send Enquiry Through Email"}
+          </button>
+        </div>
       </form>
-      <Link className="btn-secondary enquiry-home-link" to="/">
+      {isToastVisible && <div className="enquiry-toast" role="status">Your enquiry is ready to be sent.</div>}      <Link className="btn-secondary enquiry-home-link" to="/">
         Back to home
       </Link>
     </section>

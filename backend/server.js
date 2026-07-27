@@ -5,13 +5,11 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path"; 
 import { fileURLToPath } from "node:url";
 
-import connectDB from "./config/db.js";
 import enquiryRouter from "./routes/enquiry.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 5000);
 
-await connectDB();
 await mkdir(path.join(__dirname, "data"), { recursive: true });
 await mkdir(path.join(__dirname, "uploads"), { recursive: true });
 
