@@ -7,14 +7,14 @@ function About() {
             <div className='about-container'>
 
             <div className='about-image'>
-                <img src="/images/kishan.jpg.JPG" alt="Kishan Kumar Sah" />
+                <img src="/images/kishan.png.jpeg" alt="Kishan Kumar Sah" />
                 </div>
                 <div className='about-content'>
 
 <p>
-Hi, I'm Kishan Kumar Sah — a filmmaker, director, photographer, and video editor, and the founder of **Kishan Kumar Films**. I create cinematic stories that inspire, connect, and preserve meaningful moments through creative and authentic storytelling.
+Hi, I'm Kishan Kumar Sah — a filmmaker, director, photographer, and video editor, and the founder of Kishan Kumar Films. I create cinematic stories that inspire, connect, and preserve meaningful moments through creative and authentic storytelling.
 
-My work spans short films, commercials, music videos, documentaries, YouTube content, cinematic reels, and wedding films. Honored with the **Best Film Award**, my notable projects include *Nayi Imaratein Purani Soach*, *Evil Conspiracy*, and *Dhun*. Every project is crafted with a strong focus on storytelling, creativity, and cinematic excellence.
+My work spans short films, commercials, music videos, documentaries, YouTube content, cinematic reels, and wedding films. Honored with the Best Film Award, my notable projects include Nayi Imaratein Purani Soach, Evil Conspiracy, and Dhun. Every project is crafted with a strong focus on storytelling, creativity, and cinematic excellence.
 
 </p>
 </div></div> 

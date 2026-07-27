@@ -244,7 +244,7 @@ export default function Enquiry() {
                 type="text"
                 value={formData.fullName}
                 onChange={handleChange}
-                placeholder="Jane Doe"
+                placeholder=""
                 required
               />
               {errors.fullName && <span className="field-error">{errors.fullName}</span>}
@@ -258,7 +258,7 @@ export default function Enquiry() {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="jane@example.com"
+                placeholder=" "
                 required
               />
               {errors.email && <span className="field-error">{errors.email}</span>}
@@ -272,7 +272,7 @@ export default function Enquiry() {
                 type="tel"
                 value={formData.whatsapp}
                 onChange={handleChange}
-                placeholder="+91 98765 43210"
+                placeholder="+91 XXXXX XXXXX"
                 required
               />
               {errors.whatsapp && <span className="field-error">{errors.whatsapp}</span>}

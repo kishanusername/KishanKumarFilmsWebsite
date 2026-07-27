@@ -25,7 +25,7 @@ function PagePreview() {
 <TimeDate />
 
 <button onClick={() => navigate("/enquiry")}>
-        Start a Project
+       Raise an Enquiry
       </button>
 
         </section>
